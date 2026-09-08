@@ -1,0 +1,64 @@
+name: Comunicate.top API
+description: >-
+  Romanian press-release and advertorial distribution platform exposing a REST API (with free keyless public read routes
+  and authenticated partner routes), an OpenAPI 3.1 contract, an llms.txt, and a hosted MCP server for agent-native
+  access to catalogue search, drafting, editorial planning, and publication ordering.
+url: https://raw.githubusercontent.com/api-evangelist/comunicate-top-api/refs/heads/main/apis.yml
+created: '2026-09-08'
+modified: '2026-09-08'
+specificationVersion: '0.21'
+tags:
+  - Press Releases
+  - Advertorials
+  - PR
+  - Publishing
+  - Media
+  - SEO
+  - Link Building
+  - Content Marketing
+  - Romania
+  - MCP
+  - Open Data
+  - Webhooks
+  - OAuth
+apis:
+  - name: Comunicate.top API
+    description: >-
+      REST API for press-release/advertorial distribution: free keyless public routes (niches, stats, market statistics)
+      plus authenticated partner routes for articles, media, publications, editorial orders, campaigns, catalog,
+      balance, and reports. Also exposes a hosted MCP server and llms.txt.
+    humanURL: https://comunicate.top/ro/documentatie-api
+    baseURL: https://app.comunicate.top/api/v1
+    tags:
+      - Press Releases
+      - Advertorials
+      - PR
+      - Publishing
+      - Media
+      - SEO
+      - Link Building
+      - Content Marketing
+      - Romania
+      - MCP
+      - Open Data
+      - Webhooks
+      - OAuth
+    properties:
+      - type: OpenAPI
+        url: https://comunicate.top/openapi.json
+      - type: Documentation
+        url: https://comunicate.top/ro/documentatie-api
+      - type: LLMsTxt
+        url: https://comunicate.top/llms.txt
+      - type: MCPServer
+        url: https://app.comunicate.top/mcp
+      - type: Documentation
+        url: https://comunicate.top/ro/mcp
+maintainers:
+  - FN: ARC MEDIASOFT SRL
+    url: https://comunicate.top
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 97
+  at: '2026-09-08T23:38:18.005Z'
