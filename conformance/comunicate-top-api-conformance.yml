@@ -1,0 +1,62 @@
+generated: '2026-09-09'
+method: derived
+source: live probes + openapi/comunicate-top-api-openapi-original.json + https://comunicate.top/ro/documentatie-api
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      OpenAPI securitySchemes declares oauth2 authorizationCode with 10 scopes; live RFC 8414
+      authorization-server metadata at
+      https://app.comunicate.top/.well-known/oauth-authorization-server (HTTP 200).
+  - id: oauth2-1-pkce
+    conforms: true
+    evidence: >-
+      Spec and AS metadata state OAuth 2.1 with PKCE; code_challenge_methods_supported: [S256] in
+      the authorization-server metadata.
+  - id: rfc7591-dynamic-client-registration
+    conforms: true
+    evidence: registration_endpoint https://app.comunicate.top/api/v1/oauth/register in the AS metadata; spec description names dynamic client registration.
+  - id: rfc8414-authorization-server-metadata
+    conforms: true
+    evidence: https://app.comunicate.top/.well-known/oauth-authorization-server returned 200 application/json (saved at well-known/comunicate-top-api-oauth-authorization-server.json).
+  - id: rfc9728-protected-resource-metadata
+    conforms: true
+    evidence: https://app.comunicate.top/.well-known/oauth-protected-resource/mcp returned 200 with resource/authorization_servers/scopes_supported (saved at well-known/comunicate-top-api-oauth-protected-resource-mcp.json).
+  - id: rfc9727-api-catalog
+    conforms: true
+    evidence: https://comunicate.top/.well-known/api-catalog returned 200 application/linkset+json with three linkset anchors (saved at well-known/comunicate-top-api-api-catalog.json).
+  - id: apis-json
+    conforms: true
+    evidence: https://comunicate.top/apis.json returned 200 with specificationVersion 0.18 and two apis[] entries (saved at well-known/comunicate-top-api-apis-json.json).
+  - id: mcp-streamable-http
+    conforms: true
+    evidence: >-
+      Hosted MCP server at https://app.comunicate.top/mcp (stateless Streamable HTTP); listed in the
+      official MCP registry as top.comunicate/publishing (mcp/comunicate-top-api-mcp-registry.json);
+      live POST tools/list answers with a JSON-RPC auth challenge naming the OAuth metadata.
+  - id: llms-txt
+    conforms: true
+    evidence: https://comunicate.top/llms.txt returned 200 text/plain (saved at llms/comunicate-top-api-llms.txt).
+  - id: oidc
+    conforms: false
+    evidence: >-
+      /.well-known/openid-configuration on app.comunicate.top serves the same OAuth 2.1 AS metadata
+      but it is an OAuth-only server: no id_token response type, no jwks_uri/userinfo endpoint.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors are a {message, errors[]} envelope with real HTTP codes, not application/problem+json.
+  - id: cursor-pagination
+    conforms: true
+    evidence: List endpoints document cursor/nextCursor pagination (https://comunicate.top/ro/documentatie-api).
+  - id: idempotency
+    conforms: true
+    evidence: >-
+      Client-chosen idempotencyKey documented on post_articles, post_redactare and post_campaigns
+      (partial coverage — see conventions/comunicate-top-api-conventions.yml).
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returned 404 on all three hosts.
+domain_standard_note: >-
+  No sector standard applies to press-release distribution (no OpenRTB/ActivityPub/etc. shape in
+  the contract); the discovery standards above (APIs.json, RFC 9727) are the provider's
+  cross-cutting signature.

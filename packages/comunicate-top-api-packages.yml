@@ -1,0 +1,12 @@
+generated: '2026-09-09'
+method: searched
+source: registry.npmjs.org + pypi.org + provider docs
+packages: []
+note: >-
+  No first-party client libraries found. npm search for "comunicate.top" returns nothing
+  (registry.npmjs.org/-/v1/search, 2026-09-09); pypi.org/simple/comunicate-top/ is 404. The
+  provider's own integration guidance is to import the OpenAPI directly (Zapier "Import from
+  OpenAPI", Make custom app, or any client generator) or use the hosted MCP server — no SDKs are
+  shipped. The GitHub repo the MCP registry entry references
+  (github.com/adrianncraciun-cmd/public-mcp) returns 404 (private or removed), so there is no
+  installable package there either.

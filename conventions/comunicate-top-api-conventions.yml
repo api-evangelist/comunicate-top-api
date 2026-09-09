@@ -1,0 +1,79 @@
+generated: '2026-09-09'
+method: searched
+source: https://comunicate.top/ro/documentatie-api + openapi/comunicate-top-api-openapi-original.json
+authentication:
+  style: bearer
+  detail: >-
+    API key issued from the in-account Integrations page, sent as Authorization Bearer bk_live_…
+    (shown once; only its fingerprint is stored). OAuth 2.1 with PKCE and dynamic client
+    registration issues access tokens accepted everywhere a key is. The organization comes from the
+    key — there is no organizationId to send. See authentication/comunicate-top-api-authentication.yml
+    and scopes/comunicate-top-api-scopes.yml.
+idempotency:
+  coverage: partial
+  mechanism: request-body idempotencyKey (string ≤200, client-chosen, e.g. a locally generated UUID)
+  scope:
+    - post_articles
+    - post_redactare
+    - post_campaigns
+  detail: >-
+    Resending the same idempotencyKey with the same organization returns the already-created
+    resource instead of making a new one; the docs recommend it for any code that may resend after
+    a timeout. It has no effect on PATCH. POST /partner/publications carries no explicit
+    idempotencyKey; instead the platform dedupes publications server-side on the article's
+    `version` field, which increases only when title or content change — a corrected and resubmitted
+    article is a new publication, a changed tag is not. 3 of 12 mutating operations carry the
+    explicit key.
+pagination:
+  style: cursor
+  params: [cursor, limit]
+  response_fields: [nextCursor]
+  detail: >-
+    List endpoints (articles, publications, writing orders, catalog) return nextCursor; resend it
+    as cursor for the next page, null at the last page. Ordered most-recently-modified first.
+rate_limit_signaling:
+  status: 429
+  headers: [Retry-After]
+  detail: See rate-limits/comunicate-top-api-rate-limits.yml — per-key per-minute, plus 60/hour per organization on AI routes.
+error_envelope:
+  shape: '{message, errors[]?}'
+  detail: See errors/comunicate-top-api-problem-types.yml — real HTTP codes, message body, errors[] rows {path, code, message} on validation.
+versioning:
+  scheme: uri-path
+  current: v1
+request_tracing: not documented
+field_expansion: not documented
+reversibility:
+  grade: verified
+  read_only: false
+  operations:
+    - action: cancel a writing order
+      operation: post_redactare_orderId_anuleaza
+      window: >-
+        Only while the order status is NOUA (before anyone picks it up); afterwards cancellation
+        returns 409. The reserved price returns to the balance in full on REFUZATA, ANULATA or
+        ESUATA.
+      docs: https://comunicate.top/ro/documentatie-api
+    - action: delete an article
+      operation: delete_articles_articleId
+      window: not stated as time-bound; deletion is a documented operation on unpublished articles
+      docs: https://comunicate.top/ro/documentatie-api
+    - action: delete a campaign
+      operation: delete_campaigns_campaignId
+      window: not stated as time-bound
+      docs: https://comunicate.top/ro/documentatie-api
+  gaps:
+    - >-
+      A submitted publication (post_publications) has no documented API reversal operation — once an
+      article is sent to a publisher there is no cancel route in the contract. Unpaid orders cancel
+      automatically after 5 business days (https://comunicate.top/ro/preturi), and refused/failed
+      deliveries release the reserved amount, but a client cannot revoke a publication itself.
+  detail: >-
+    The one money-spending flow with a reversal path (writing orders) states both the operation and
+    the window in the provider's own docs; publication ordering is the stated gap above.
+cross_links:
+  errors: errors/comunicate-top-api-problem-types.yml
+  authentication: authentication/comunicate-top-api-authentication.yml
+  rate_limits: rate-limits/comunicate-top-api-rate-limits.yml
+  lifecycle: lifecycle/comunicate-top-api-lifecycle.yml
+  webhooks: asyncapi/comunicate-top-api-webhooks.yml

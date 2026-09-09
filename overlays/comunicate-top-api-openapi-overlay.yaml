@@ -1,0 +1,37 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Comunicate.top API
+  version: 1.0.0
+extends: openapi/comunicate-top-api-openapi-original.json
+x-generated: '2026-09-09'
+x-method: generated
+actions:
+  - target: $.info
+    update:
+      x-apievangelist:
+        slug: comunicate-top-api
+        profiled: '2026-09-09'
+        artifacts:
+          conventions: conventions/comunicate-top-api-conventions.yml
+          errors: errors/comunicate-top-api-problem-types.yml
+          scopes: scopes/comunicate-top-api-scopes.yml
+          rate-limits: rate-limits/comunicate-top-api-rate-limits.yml
+          webhooks: asyncapi/comunicate-top-api-webhooks.yml
+          mcp: mcp/comunicate-top-api-mcp.yml
+  - target: $.info
+    update:
+      x-discovery:
+        apis-json: https://comunicate.top/apis.json
+        api-catalog: https://comunicate.top/.well-known/api-catalog
+        llms-txt: https://comunicate.top/llms.txt
+        mcp: https://app.comunicate.top/mcp
+  - target: $.paths['/partner/publications'].post
+    update:
+      x-agentic-note: >-
+        Spends credits or money; requires PUBLICATIONS_WRITE and, for MCP assistants, the
+        account-level AI spending switch. No documented API reversal once submitted.
+  - target: $.paths['/partner/redactare'].post
+    update:
+      x-agentic-note: >-
+        Paid from money balance; reversible via POST /partner/redactare/{orderId}/anuleaza only
+        while status is NOUA.

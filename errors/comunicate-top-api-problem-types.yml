@@ -1,0 +1,40 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/comunicate-top-api-openapi-original.json + https://comunicate.top/ro/documentatie-api
+format: message-envelope
+note: >-
+  Not RFC 9457. Errors use a real HTTP status code (400, 401, 403, 404, 409) and a JSON body with
+  `message`; validation errors add `errors[]` rows of {path, code, message}. Example from the docs:
+  {"message": "Datele trimise nu sunt valide", "errors": [{"path": "tags", "code": "invalid_type",
+  "message": "Expected array, received string"}]}. 429 carries Retry-After and is documented as the
+  only status where retrying makes sense.
+envelope:
+  message: human-readable error message
+  errors: 'validation only: [{path, code, message}] naming the field and why'
+problems:
+  - status: 400
+    title: Invalid input
+    detail: >-
+      Validation failure, or a write refused at the door — e.g. a writing order with insufficient
+      balance is rejected with 400 and never created.
+    source_operations: all 36 operations declare 400
+  - status: 401
+    title: Missing or invalid API key
+    detail: Partner routes require Authorization Bearer bk_live_… or an OAuth 2.1 access token.
+    source_operations: all 32 /partner/* operations declare 401
+  - status: 403
+    title: The key lacks the required scope
+    detail: Each key carries only the permissions granted at issue time; 403 is not retryable.
+    source_operations: all 32 /partner/* operations declare 403
+  - status: 404
+    title: Not found
+    detail: Documented in the docs error section (resource does not exist or is not yours).
+  - status: 409
+    title: Conflict
+    detail: >-
+      Documented on writing-order cancellation: cancelling is only possible while the order is
+      NOUA; once picked up, cancellation returns 409.
+    source_operations: [post_redactare_orderId_anuleaza]
+  - status: 429
+    title: Rate limit exceeded
+    detail: Returned with Retry-After when the per-key per-minute limit is exceeded; the one retryable error.

@@ -1,0 +1,139 @@
+generated: '2026-09-09'
+method: derived
+source: https://comunicate.top/ro/mcp + openapi/comunicate-top-api-openapi-original.json
+note: >-
+  The live MCP tools/list is auth-gated (JSON-RPC -32001 challenge), so tools are bound to REST
+  operationIds by name and by the provider's own statement that the MCP server carries "the same
+  rules as the partner API". Every operationId below exists verbatim in the OpenAPI. Confidence is
+  medium where the binding is name/semantic rather than schema-verified.
+surfaces:
+  openapi: openapi/comunicate-top-api-openapi-original.json
+  mcp:
+    url: https://app.comunicate.top/mcp
+    gated: true
+  graphql: null
+coverage:
+  tools_named: 20
+  tools_bound: 20
+  mcp_only: 0
+  rest_operations_total: 36
+  rest_operations_with_tool: 20
+crosswalk:
+  - tool: whoami
+    category: identity
+    rest: [get_me]
+    binding: rest
+    confidence: high
+  - tool: get_balance
+    category: balance
+    rest: [get_balance]
+    binding: rest
+    confidence: high
+  - tool: search_catalog
+    category: catalogue
+    rest: [get_catalog]
+    binding: rest
+    confidence: high
+  - tool: get_site
+    category: catalogue
+    rest: [get_catalog_siteId]
+    binding: rest
+    confidence: high
+  - tool: list_campaign_types
+    category: catalogue
+    rest: [get_campaign_types]
+    binding: rest
+    confidence: high
+  - tool: list_articles
+    category: articles
+    rest: [get_articles]
+    binding: rest
+    confidence: high
+  - tool: get_article
+    category: articles
+    rest: [get_articles_articleId]
+    binding: rest
+    confidence: high
+  - tool: create_article
+    category: articles
+    rest: [post_articles]
+    binding: rest
+    confidence: high
+  - tool: update_article
+    category: articles
+    rest: [patch_articles_articleId]
+    binding: rest
+    confidence: high
+  - tool: check_article_seo
+    category: checks
+    rest: [get_articles_articleId_seo]
+    binding: rest
+    confidence: high
+  - tool: check_article_fit
+    category: checks
+    rest: [get_articles_articleId_potrivire]
+    binding: rest
+    confidence: high
+  - tool: list_campaigns
+    category: campaigns
+    rest: [get_campaigns]
+    binding: rest
+    confidence: high
+  - tool: create_campaign
+    category: campaigns
+    rest: [post_campaigns]
+    binding: rest
+    confidence: high
+  - tool: update_campaign
+    category: campaigns
+    rest: [patch_campaigns_campaignId]
+    binding: rest
+    confidence: high
+  - tool: list_publications
+    category: publications
+    rest: [get_publications]
+    binding: rest
+    confidence: high
+  - tool: get_publication
+    category: publications
+    rest: [get_publications_publicationId]
+    binding: rest
+    confidence: high
+  - tool: order_publication
+    category: publications
+    rest: [post_publications]
+    binding: rest
+    confidence: medium
+    note: Spends money; refused unless the account's AI spending switch is on and the key has PUBLICATIONS_WRITE.
+  - tool: order_writing
+    category: writing-orders
+    rest: [post_redactare]
+    binding: rest
+    confidence: medium
+    note: Spends money (paid from balance, not credits); same spending gate as order_publication.
+  - tool: list_writing_orders
+    category: writing-orders
+    rest: [get_redactare]
+    binding: rest
+    confidence: high
+  - tool: report_summary
+    category: reports
+    rest: [get_reports_summary]
+    binding: rest
+    confidence: high
+mcp_only: []
+rest_only:
+  - capability: public catalogue (keyless)
+    operations: [get__public_stats, get__public_niches, get__public_niches_slug, get__public_statistici_piata]
+  - capability: article import and Drive integration
+    operations: [post_articles_import, get_articles_drive, post_articles_drive]
+  - capability: article lifecycle extras
+    operations: [delete_articles_articleId, get_articles_articleId_revisions]
+  - capability: writing-order detail and cancellation
+    operations: [get_redactare_orderId, post_redactare_orderId_anuleaza]
+  - capability: media upload
+    operations: [post_media]
+  - capability: campaign detail and deletion
+    operations: [get_campaigns_campaignId, delete_campaigns_campaignId]
+  - capability: reporting detail and domain audit
+    operations: [get_reports_publications, get_audit]

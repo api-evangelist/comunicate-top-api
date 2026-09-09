@@ -1,0 +1,113 @@
+# Comunicate.top
+
+> Platformă românească pentru publicarea de advertoriale, comunicate de presă și articole SEO pe o rețea de publicații online. Prețul și termenul fiecărei publicații sunt scrise în catalog, publice, identice pentru toți clienții — nu există cerere de ofertă și nu există negociere.
+
+## Fapte
+
+- Operator: ARC MEDIASOFT SRL, CUI RO32431001, J40/13626/2013, București, România.
+- Preț: 45 lei fără TVA per publicare, aceeași sumă pe orice publicație din rețea, indiferent de nișă sau de autoritatea site-ului.
+- Abonamente: de la 420 lei (10 publicări) până la 3100 lei (100 publicări); preț efectiv minim 31 lei per publicare. Creditele cumpărate nu expiră.
+- Prima publicare este gratuită la crearea contului, fără card.
+- Rețea: 3822 publicații active, 21 nișe.
+- Conținut sensibil: casino și adult au tarif separat (multiplu al prețului de bază) și se plătesc din sold în bani, nu din abonament.
+- Plată: transfer bancar, cu factură proformă emisă automat la comandă. Transferul durează de obicei 1–3 zile lucrătoare. Comanda neplătită se anulează automat după 5 zile lucrătoare.
+- Publicare: automată acolo unde site-ul publisherului permite conectarea, manuală în rest. Nu e obligatoriu ca site-ul să fie WordPress.
+- Marcaj publicitar: aplicat automat la publicare, conform Legii 363/2007 din România, care cere ca materialul plătit să fie recognoscibil ca atare. Folosirea contextului editorial pentru promovare plătită fără această precizare este practică incorectă în orice situație.
+- Contact: contact@comunicate.top, 0721 936 907.
+
+## Ce nu facem
+
+- Nu vindem linkuri fără marcaj publicitar.
+- Nu practicăm prețuri diferite pe client: catalogul e același pentru toată lumea.
+- Nu generăm articole automat pentru a le prezenta drept conținut editorial.
+- Nu acceptăm publisheri persoane fizice și nu acceptăm comenzi de la persoane fizice.
+
+## Pagini principale
+
+- [Prezentare](https://comunicate.top/ro/acasa): ce face platforma și cum decurge o publicare.
+- [Prețuri](https://comunicate.top/ro/preturi): prețul per publicare, abonamentele, modul de plată.
+- [Catalogul de publicații](https://comunicate.top/ro/publicatii): nișele și publicațiile din rețea.
+- [Cum funcționează platforma](https://comunicate.top/ro/platforma): drumul unui articol, de la document la link.
+- [Pentru companii și agenții](https://comunicate.top/ro/pentru-companii): campanii pe client, rapoarte, integrare.
+- [Pentru publisheri](https://comunicate.top/ro/pentru-publisheri): condițiile de înscriere a unui site.
+- [Despre](https://comunicate.top/ro/despre) · [Contact](https://comunicate.top/ro/contact)
+
+## Servicii, pe intenție
+
+- [Publicare advertoriale](https://comunicate.top/ro/publicare-advertorial)
+- [Publicare articol SEO](https://comunicate.top/ro/publicare-articol-seo)
+- [Comunicate de presă gratuite](https://comunicate.top/ro/comunicate-de-presa-gratuite)
+- [Comunicat de presă pentru ONG](https://comunicate.top/ro/publicare-comunicat-ong)
+- [Comunicat pentru proiecte cu fonduri europene](https://comunicate.top/ro/publicare-comunicat-fonduri-europene)
+- [Articole sponsorizate](https://comunicate.top/ro/articole-sponsorizate)
+- [Link building prin articole](https://comunicate.top/ro/link-building)
+- [Advertoriale ieftine, 45 lei](https://comunicate.top/ro/advertoriale-ieftine)
+- [Advertoriale pe site-uri de știri](https://comunicate.top/ro/advertoriale-pe-site-uri-de-stiri)
+- [Guest post pe site-uri românești](https://comunicate.top/ro/guest-post)
+- [Advertoriale pentru clinici, medici și farmacii](https://comunicate.top/ro/advertoriale-sanatate)
+- [Unde publici un comunicat de presă](https://comunicate.top/ro/unde-publici-comunicat-de-presa)
+
+## Nișe
+
+- [Știri](https://comunicate.top/ro/publicatii/stiri): 1299 publicații.
+- [Generalist](https://comunicate.top/ro/publicatii/generalist): 2106 publicații.
+- [Business](https://comunicate.top/ro/publicatii/business): 270 publicații.
+- [Marketing](https://comunicate.top/ro/publicatii/marketing): 132 publicații.
+- [Tehnologie](https://comunicate.top/ro/publicatii/tehnologie): 186 publicații.
+- [Lifestyle](https://comunicate.top/ro/publicatii/lifestyle): 599 publicații.
+- [Sănătate](https://comunicate.top/ro/publicatii/sanatate): 130 publicații.
+- [Beauty](https://comunicate.top/ro/publicatii/beauty): 62 publicații.
+- [Fashion](https://comunicate.top/ro/publicatii/fashion): 68 publicații.
+- [Turism](https://comunicate.top/ro/publicatii/turism): 160 publicații.
+- [Culinar](https://comunicate.top/ro/publicatii/culinar): 54 publicații.
+- [Imobiliare](https://comunicate.top/ro/publicatii/imobiliare): 32 publicații.
+- [Casă și grădină](https://comunicate.top/ro/publicatii/casa-si-gradina): 94 publicații.
+- [Auto](https://comunicate.top/ro/publicatii/auto): 60 publicații.
+- [Sport](https://comunicate.top/ro/publicatii/sport): 115 publicații.
+- [Educație](https://comunicate.top/ro/publicatii/educatie): 84 publicații.
+- [Parenting](https://comunicate.top/ro/publicatii/parenting): 36 publicații.
+- [Agricultură](https://comunicate.top/ro/publicatii/agricultura): 14 publicații.
+- [Betting](https://comunicate.top/ro/publicatii/betting): 24 publicații.
+- [Radio](https://comunicate.top/ro/publicatii/radio): 19 publicații.
+- [Blog](https://comunicate.top/ro/publicatii/blog): 152 publicații.
+
+## Ghiduri
+
+- [cum alegi site urile pentru advertoriale](https://comunicate.top/ro/cum-alegi-site-urile-pentru-advertoriale)
+- [advertorial sau google ads](https://comunicate.top/ro/advertorial-sau-google-ads)
+- [exemplu de advertorial](https://comunicate.top/ro/exemplu-de-advertorial)
+- [cat costa un comunicat de presa](https://comunicate.top/ro/cat-costa-un-comunicat-de-presa)
+- [advertorial sau articol seo](https://comunicate.top/ro/advertorial-sau-articol-seo)
+- [documente publicitate domenii reglementate](https://comunicate.top/ro/documente-publicitate-domenii-reglementate)
+- [reguli publicare comunicate top](https://comunicate.top/ro/reguli-publicare-comunicate-top)
+- [media kit](https://comunicate.top/ro/media-kit)
+- [comunicat de presa angajare](https://comunicate.top/ro/comunicat-de-presa-angajare)
+- [pitch jurnalist](https://comunicate.top/ro/pitch-jurnalist)
+- [nota de presa eveniment sportiv](https://comunicate.top/ro/nota-de-presa-eveniment-sportiv)
+- [comunicat de presa eveniment](https://comunicate.top/ro/comunicat-de-presa-eveniment)
+- [diferenta comunicat de presa advertorial](https://comunicate.top/ro/diferenta-comunicat-de-presa-advertorial)
+- [titlu comunicat de presa](https://comunicate.top/ro/titlu-comunicat-de-presa)
+- [structura comunicat de presa](https://comunicate.top/ro/structura-comunicat-de-presa)
+- [boilerplate comunicat de presa](https://comunicate.top/ro/boilerplate-comunicat-de-presa)
+- [content marketing](https://comunicate.top/ro/content-marketing)
+- [advertorial](https://comunicate.top/ro/advertorial)
+- [comunicat de presa lansare produs](https://comunicate.top/ro/comunicat-de-presa-lansare-produs)
+- [cum scrii un comunicat de presa](https://comunicate.top/ro/cum-scrii-un-comunicat-de-presa)
+
+## API și MCP
+
+- Documentație: [rutele API](https://comunicate.top/ro/documentatie-api) · specificație OpenAPI 3.1: https://comunicate.top/openapi.json · index APIs.json: https://comunicate.top/apis.json
+- Gratuit, fără cheie și fără cont (numai citire):
+  - `GET https://app.comunicate.top/api/v1/public/stats` — câte publicații și câte nișe are rețeaua.
+  - `GET https://app.comunicate.top/api/v1/public/niches?locale=ro` — nișele, cu numărul de publicații și autoritatea medie.
+  - `GET https://app.comunicate.top/api/v1/public/niches/{slug}?locale=ro` — o nișă, cu publicații de probă: domeniu, DA, PA, termen, preț.
+  - `GET https://app.comunicate.top/api/v1/public/statistici-piata` — distribuția autorității, termenele și prețul pe fiecare tip de campanie.
+- Nu există rută publică pentru lista întreagă de publicații, și nicio rută publică nu scrie nimic în platformă.
+- Server MCP pentru asistenți: https://app.comunicate.top/mcp (OAuth 2.1 cu PKCE, înregistrare dinamică de client). [Ce poate face](https://comunicate.top/ro/mcp).
+- Restul API-ului (catalog cu prețuri, articole, comenzi, publicări, campanii, rapoarte, webhook-uri) cere o cheie emisă din cont.
+
+## Note
+
+- Sitemap: https://comunicate.top/sitemap.xml
+- Conținutul editorial este în limba română. Paginile de marketing există și în engleză, sub `/en/`.
+- Ultima generare: 2026-09-09.

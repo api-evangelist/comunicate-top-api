@@ -1,0 +1,27 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/comunicate-top-api-openapi-original.json
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: apiKey
+  type: http
+  scheme: bearer
+  description: API key from Integrations (bk_live_…)
+  sources:
+  - openapi/comunicate-top-api-openapi-original.json
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+    tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+    scopes: 10
+  description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register.
+    The access token is an API key and is accepted everywhere an API key is.
+  sources:
+  - openapi/comunicate-top-api-openapi-original.json

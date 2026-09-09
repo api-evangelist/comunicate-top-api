@@ -1,0 +1,40 @@
+generated: '2026-09-09'
+method: searched
+source: https://comunicate.top/ro/documentatie-api
+spec_type: Webhooks
+note: >-
+  No AsyncAPI document is published; this captures the documented webhook surface. Endpoints are
+  configured from the Integrations page in the account (not via API — changing an event destination
+  requires a signed-in person).
+delivery:
+  configuration: https://app.comunicate.top/ro/integrari (in-account Integrations page; not settable via API)
+  retries: >-
+    A delivery that does not get a 2xx is retried automatically with growing backoff: 30 seconds,
+    then 1, 2, 4, 8, 16 and 32 minutes — seven attempts in total. After that the delivery stays
+    visible on the Integrations page with the response received, and can be retried manually;
+    a failed manual retry re-enters the automatic rotation.
+  signature:
+    header: 'X-Birou-Signature: t=<timestamp>,v1=<hmac>'
+    algorithm: HMAC-SHA256 over "<timestamp>.<raw body>" with the endpoint secret
+    replay_protection: verify t is recent (docs example uses a 300-second window) and compare in constant time
+events:
+  - name: article.created
+    description: An article was created, through any path.
+  - name: article.generated
+    description: A draft requested from the UI finished writing (API-submitted orders use redaction.delivered instead).
+  - name: article.failed
+    description: Writing a draft failed.
+  - name: publication.submitted
+    description: The publication was sent to the publisher.
+  - name: publication.published
+    description: The article appeared on the site; carries the live article URL.
+  - name: publication.failed
+    description: The publication failed or was rejected.
+  - name: indexing.updated
+    description: The indexing state of a published article changed.
+  - name: order.accepted
+    description: The publisher accepted the order.
+  - name: redaction.delivered
+    description: A writing order was delivered; carries orderId and articleId.
+  - name: redaction.rejected
+    description: A writing order was refused; carries the reason.

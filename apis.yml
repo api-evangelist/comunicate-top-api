@@ -4,8 +4,9 @@ description: >-
   and authenticated partner routes), an OpenAPI 3.1 contract, an llms.txt, and a hosted MCP server for agent-native
   access to catalogue search, drafting, editorial planning, and publication ordering.
 url: https://raw.githubusercontent.com/api-evangelist/comunicate-top-api/refs/heads/main/apis.yml
+image: https://comunicate.top/icon.svg
 created: '2026-09-08'
-modified: '2026-09-08'
+modified: '2026-09-09'
 specificationVersion: '0.21'
 tags:
   - Press Releases
@@ -29,6 +30,7 @@ apis:
       balance, and reports. Also exposes a hosted MCP server and llms.txt.
     humanURL: https://comunicate.top/ro/documentatie-api
     baseURL: https://app.comunicate.top/api/v1
+    image: https://comunicate.top/icon.svg
     tags:
       - Press Releases
       - Advertorials
@@ -54,11 +56,70 @@ apis:
         url: https://app.comunicate.top/mcp
       - type: Documentation
         url: https://comunicate.top/ro/mcp
+      - type: APIReference
+        url: https://comunicate.top/ro/documentatie-api
 maintainers:
   - FN: ARC MEDIASOFT SRL
+    email: contact@comunicate.top
     url: https://comunicate.top
-generated:
+x-generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 97
   at: '2026-09-08T23:38:18.005Z'
+x-enrichment:
+  date: '2026-09-09'
+  status: enriched
+  artifacts_added: 29
+  pass: local-v3
+common:
+- type: Website
+  url: https://comunicate.top
+- type: ToolCrosswalk
+  url: mcp/comunicate-top-api-tool-crosswalk.yml
+- type: DomainSecurity
+  url: security/comunicate-top-api-domain-security.yml
+- type: OAuthScopes
+  url: scopes/comunicate-top-api-scopes.yml
+- type: Authentication
+  url: authentication/comunicate-top-api-authentication.yml
+- type: WellKnown
+  url: well-known/comunicate-top-api-well-known.yml
+- type: Webhooks
+  url: asyncapi/comunicate-top-api-webhooks.yml
+- type: ErrorCatalog
+  url: errors/comunicate-top-api-problem-types.yml
+- type: Conventions
+  url: conventions/comunicate-top-api-conventions.yml
+- type: Idempotency
+  url: conventions/comunicate-top-api-conventions.yml
+- type: Plans
+  url: plans/comunicate-top-api-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/comunicate-top-api-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/comunicate-top-api-lifecycle.yml
+- type: Conformance
+  url: conformance/comunicate-top-api-conformance.yml
+- type: Overlay
+  url: overlays/comunicate-top-api-openapi-overlay.yaml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/comunicate-top-api-data-model.yml
+- type: Packages
+  url: packages/comunicate-top-api-packages.yml
+- type: Pricing
+  url: https://comunicate.top/ro/preturi
+- type: SignUp
+  url: https://app.comunicate.top/ro/inregistrare
+- type: Login
+  url: https://app.comunicate.top/ro/login
+- type: TermsOfService
+  url: https://comunicate.top/ro/legal/termeni
+- type: PrivacyPolicy
+  url: https://comunicate.top/ro/legal/confidentialitate
+- type: Support
+  url: https://comunicate.top/ro/contact
+- type: Blog
+  url: https://comunicate.top/ro/blog

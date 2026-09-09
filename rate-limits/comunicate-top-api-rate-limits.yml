@@ -1,0 +1,30 @@
+generated: '2026-09-09'
+method: searched
+source: https://comunicate.top/ro/documentatie-api
+limit_count: 2
+limits:
+  - scope: per-key
+    window: 1m
+    limit: set per key at issue time (written on the key when issued; not one global number)
+    status_on_exhaustion: 429
+    headers: [Retry-After]
+    note: >-
+      Limits are per key, not per account, so a runaway integration does not block the account's
+      other keys. 429 with Retry-After is documented as the only case where retrying makes sense
+      (vs 403, which is not retryable).
+  - scope: per-organization
+    window: 1h
+    limit: 60
+    applies_to: AI routes — article writing, document import, metadata completion
+    status_on_exhaustion: 429
+    headers: [Retry-After]
+    note: >-
+      Applies regardless of how many keys the organization holds; these routes consume the
+      platform's own model quotas.
+observed:
+  - url: https://app.comunicate.top/api/v1/public/stats
+    status: 200
+    rate_limit_headers: none
+    note: >-
+      Public keyless routes advertise "no rate-limit headers to negotiate" in the OpenAPI info
+      description; a live unauthenticated response carried no X-RateLimit-*/RateLimit-* headers.

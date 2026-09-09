@@ -1,0 +1,62 @@
+generated: '2026-09-09'
+method: searched
+status: published
+source: https://comunicate.top/ro/mcp
+deployment:
+  mode: remote
+  endpoint: https://app.comunicate.top/mcp
+  auth: oauth
+  verified: probed
+server:
+  name: comunicate
+  registry_name: top.comunicate/publishing
+  transport: http
+  transport_detail: stateless Streamable HTTP
+  url: https://app.comunicate.top/mcp
+  version: 1.0.1
+  registry: https://registry.modelcontextprotocol.io/v0/servers?search=top.comunicate
+  registry_file: comunicate-top-api-mcp-registry.json
+authentication:
+  - type: api-key
+    detail: 'Authorization: Bearer bk_live_… (key issued at https://app.comunicate.top/ro/integrari)'
+  - type: oauth
+    detail: >-
+      OAuth 2.1 with PKCE (S256) and dynamic client registration; RFC 9728 protected-resource
+      metadata at https://app.comunicate.top/.well-known/oauth-protected-resource/mcp, RFC 8414
+      authorization-server metadata at https://app.comunicate.top/.well-known/oauth-authorization-server.
+      MCP clients that speak OAuth (claude.ai, ChatGPT connectors) self-configure.
+safety:
+  spending_gate: >-
+    By default an assistant cannot spend: order_publication and order_writing are refused with an
+    explanation until the account owner enables "AI assistants can order and publish" in
+    Integrations. Key scopes still apply on top of the switch (a key without PUBLICATIONS_WRITE
+    cannot order regardless). Enable/disable events stay in the audit log.
+probe:
+  tools_list_status: 401
+  note: >-
+    POST tools/list returns a JSON-RPC -32001 auth challenge naming both auth paths, so the live
+    tool schemas are auth-gated; the 20-tool list below is from the provider's own MCP page
+    (https://comunicate.top/ro/mcp) — input schemas require authenticated introspection.
+tools:
+  - name: whoami
+  - name: get_balance
+  - name: search_catalog
+  - name: get_site
+  - name: list_campaign_types
+  - name: list_articles
+  - name: get_article
+  - name: create_article
+  - name: update_article
+  - name: check_article_seo
+  - name: check_article_fit
+  - name: list_campaigns
+  - name: create_campaign
+  - name: update_campaign
+  - name: list_publications
+  - name: get_publication
+  - name: order_publication
+    spends_money: true
+  - name: order_writing
+    spends_money: true
+  - name: list_writing_orders
+  - name: report_summary

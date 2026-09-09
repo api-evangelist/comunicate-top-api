@@ -1,0 +1,15 @@
+generated: '2026-09-09'
+method: generated
+skills:
+  - file: comunicate-top-api-search-catalog-and-price.md
+    name: Search the Comunicate.top catalogue and price a campaign
+    api: openapi/comunicate-top-api-openapi-original.json
+    operations: [get__public_stats, get__public_niches, get__public_niches_slug, get__public_statistici_piata, get_catalog, get_catalog_siteId, get_campaign_types]
+  - file: comunicate-top-api-create-article-and-publish.md
+    name: Create an article and order its publication
+    api: openapi/comunicate-top-api-openapi-original.json
+    operations: [post_articles, post_articles_import, post_media, get_articles_articleId_seo, get_articles_articleId_potrivire, get_balance, post_publications, get_publications_publicationId]
+  - file: comunicate-top-api-order-writing-and-track.md
+    name: Order a written article and track it to delivery
+    api: openapi/comunicate-top-api-openapi-original.json
+    operations: [get_balance, post_redactare, get_redactare, get_redactare_orderId, post_redactare_orderId_anuleaza, get_articles_articleId]

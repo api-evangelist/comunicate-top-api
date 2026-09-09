@@ -1,0 +1,18 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/comunicate-top-api-openapi-original.json + https://comunicate.top/ro/documentatie-api
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://comunicate.top/ro/documentatie-api
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No published deprecation policy or Sunset/Deprecation header support found.
+sla:
+  url: null
+  note: No published SLA found.
+status_page: null
+status_page_note: No status page found (status.comunicate.top does not resolve; none linked from docs or footer).
+deprecated_operations: []
+deprecated_operations_note: The OpenAPI marks no operation deprecated.

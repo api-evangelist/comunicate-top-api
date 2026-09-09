@@ -1,0 +1,46 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/comunicate-top-api-openapi-original.json + https://comunicate.top/ro/documentatie-api
+note: >-
+  The spec declares no components.schemas; entities and relationships are derived from inline
+  request/response schemas and id-reference fields. Ids are UUIDs. An article's `version` increases
+  only when title or content change and enters the server-side idempotency key of a publication.
+entities:
+  - name: Organization
+    detail: Implicit — always resolved from the API key or OAuth token; never sent as a parameter.
+  - name: Article
+    id: articleId
+    fields: [title, contentHtml, focusKeyword, tags, slug, excerpt, seoTitle, featuredImageUrl, featuredImageAlt, campaignId, idempotencyKey, version, status]
+  - name: Site (catalogue publication)
+    id: siteId
+    fields: [domain, niche, authority, acceptedCampaigns, packages, extras, price, turnaround]
+  - name: Niche
+    id: slug
+    fields: [name, publications_count, average_authority]
+  - name: Publication (order to publish)
+    id: publicationId
+    fields: [articleId, siteIds, campaignType, packageTypeId, licenseNumber, extrasBySite, scheduledFor, status, url]
+  - name: WritingOrder
+    id: orderId
+    fields: [tema, fapte, status, articleId, chargedCents, rejectionReason]
+    states: [NOUA, IN_LUCRU, LIVRATA, REFUZATA, ANULATA, ESUATA]
+  - name: Campaign
+    id: campaignId
+    fields: [name, creditLimit, idempotencyKey]
+  - name: MediaAsset
+    fields: [url]
+  - name: Balance
+    fields: [money, packages]
+  - name: Package
+    id: packageTypeId
+    fields: [credits_remaining, family]
+relationships:
+  - {from: Article, to: Campaign, type: belongs_to, via: campaignId}
+  - {from: Article, to: Organization, type: belongs_to, via: API key}
+  - {from: Publication, to: Article, type: belongs_to, via: articleId}
+  - {from: Publication, to: Site, type: has_many, via: siteIds}
+  - {from: Publication, to: Package, type: belongs_to, via: packageTypeId}
+  - {from: WritingOrder, to: Article, type: has_one, via: articleId (set only on LIVRATA)}
+  - {from: Site, to: Niche, type: belongs_to, via: niche slug}
+  - {from: Balance, to: Package, type: has_many, via: 'packages[]'}
+  - {from: Article, to: MediaAsset, type: has_one, via: featuredImageUrl (from POST /partner/media)}

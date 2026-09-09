@@ -1,0 +1,108 @@
+generated: '2026-09-09'
+method: searched
+source: live probes of comunicate.top, www.comunicate.top and app.comunicate.top
+note: >-
+  Real discovery surface. comunicate.top serves an RFC 9727 api-catalog (application/linkset+json)
+  and an APIs.json index at the domain root (/apis.json, specificationVersion 0.18). app.comunicate.top
+  serves full OAuth 2.1 discovery: RFC 8414 authorization-server metadata (also mirrored at
+  /openid-configuration) and RFC 9728 protected-resource metadata for the MCP server (both at
+  /.well-known/oauth-protected-resource and /.well-known/oauth-protected-resource/mcp). Misses are
+  real 404s (HTML error page with a 404 status); a negative-control probe
+  (/.well-known/apisio-negative-control-7f3ab91c.json) returned 404 on every host, so the 200s are
+  genuine documents, not a catch-all router.
+path_echo_control: passed
+hosts:
+  - host: https://comunicate.top
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: application/linkset+json
+        file: comunicate-top-api-api-catalog.json
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/ucp.json
+        status: 404
+      - path: /.well-known/acp.json
+        status: 404
+      - path: /.well-known/aauth-resource.json
+        status: 404
+      - path: /.well-known/apis.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /apis.json
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-apis-json.json
+      - path: /apis.yml
+        status: 404
+  - host: https://www.comunicate.top
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: application/linkset+json
+        file: comunicate-top-api-api-catalog.json
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /apis.json
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-apis-json.json
+  - host: https://app.comunicate.top
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-openid-configuration.json
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-oauth-authorization-server.json
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-oauth-protected-resource.json
+      - path: /.well-known/oauth-protected-resource/mcp
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-oauth-protected-resource-mcp.json
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: application/linkset+json
+        file: comunicate-top-api-api-catalog.json
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/ucp.json
+        status: 404
+      - path: /.well-known/acp.json
+        status: 404
+      - path: /.well-known/aauth-resource.json
+        status: 404
+      - path: /.well-known/apis.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /apis.json
+        status: 200
+        content_type: application/json
+        file: comunicate-top-api-apis-json.json
+      - path: /apis.yml
+        status: 404

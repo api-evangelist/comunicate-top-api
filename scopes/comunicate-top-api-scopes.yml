@@ -1,0 +1,65 @@
+generated: '2026-09-09'
+method: searched
+source: openapi/comunicate-top-api-openapi-original.json
+docs: https://comunicate.top/ro/documentatie-api
+note: >-
+  Scope names and flow derived from the OpenAPI oauth2 scheme; descriptions enriched from the
+  permissions section of the API docs. The same 10 scopes are listed as scopes_supported in the
+  RFC 8414 metadata at https://app.comunicate.top/.well-known/oauth-authorization-server. Keys are
+  scoped identically: each API key receives only the permissions chosen at issue time, and an OAuth
+  access token is accepted everywhere a key is.
+schemes:
+  - name: oauth2
+    source: openapi/comunicate-top-api-openapi-original.json
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+        tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+        refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+    registration: https://app.comunicate.top/api/v1/oauth/register (RFC 7591 dynamic client registration)
+    pkce: S256 required (OAuth 2.1)
+    description: >-
+      OAuth 2.1 with PKCE (S256). Dynamic client registration at
+      https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is
+      accepted everywhere an API key is.
+scopes:
+  - scope: CATALOG_READ
+    description: Read the publication catalogue and the campaign types.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: ARTICLES_READ
+    description: Read the organization's articles.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: ARTICLES_WRITE
+    description: Create and modify articles, import documents and from Drive, request writing orders.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: MEDIA_WRITE
+    description: Upload images to the gallery.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: PUBLICATIONS_READ
+    description: Read publications and their status.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: PUBLICATIONS_WRITE
+    description: Request publication — the only permission that spends credits or money.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: CAMPAIGNS_READ
+    description: Read campaigns.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: CAMPAIGNS_WRITE
+    description: Create campaigns.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: BALANCE_READ
+    description: Read the balance and the packages held.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
+  - scope: REPORTS_READ
+    description: Read reports over a period.
+    flows: [authorizationCode]
+    sources: [openapi/comunicate-top-api-openapi-original.json]
