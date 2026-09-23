@@ -1,0 +1,141 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Balance and reports API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Balance and reports
+paths:
+  /partner/balance:
+    get:
+      operationId: get_balance
+      summary: Available balance
+      description: 'The packages you own, with the credit left on each, and the money balance. Check it before requesting a publication — otherwise the integration finds out from an error, after it has already built the article.
+
+
+        `available` subtracts reservations: a publication in flight has already locked the credit, even if it has not consumed it.
+
+
+        Required scope: `BALANCE_READ`.'
+      tags:
+      - Balance and reports
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - BALANCE_READ
+  /partner/reports/summary:
+    get:
+      operationId: get_reports_summary
+      summary: Period summary
+      description: 'Defaults to the last 30 days. An integration that sends no range gets something useful, not the entire history.
+
+
+        Required scope: `REPORTS_READ`.'
+      tags:
+      - Balance and reports
+      parameters:
+      - name: from
+        in: query
+        required: false
+        description: Range start.
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        required: false
+        description: Range end.
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - REPORTS_READ
+  /partner/reports/publications:
+    get:
+      operationId: get_reports_publications
+      summary: Publications in range
+      description: 'Row by row, for reporting to the client.
+
+
+        Required scope: `REPORTS_READ`.'
+      tags:
+      - Balance and reports
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - REPORTS_READ
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

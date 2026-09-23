@@ -1,0 +1,427 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Articles API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Articles
+  description: 'An article enters the platform four ways: written by you as HTML, imported from a document, taken from a Drive folder, or written by the platform from a brief. All produce the same thing — a draft that can be published.'
+paths:
+  /partner/articles:
+    post:
+      operationId: post_articles
+      summary: Create an article from HTML
+      description: 'The direct route, when you already have the text. The markup goes through the same sanitiser as imports: scripts, inline styles and elements that do not belong in an article are removed, and what was removed appears in the response.
+
+
+        Optimisation fields are normalised, not rejected: five comma-separated keywords keep the first; ten tags keep the first three. An article supports one term, and twenty tags mean archive pages with a single text on them.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Articles
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - contentHtml
+              properties:
+                title:
+                  type: string
+                  description: The article title.
+                contentHtml:
+                  type: string
+                  description: The article body, as HTML.
+                focusKeyword:
+                  type: string
+                  description: The keyword to optimise for. **One only** — from a list, the first is kept.
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: At most three, however many are sent. A comma-separated list inside one element is also accepted.
+                metaDescription:
+                  type: string
+                  description: The description shown in search results.
+                slug:
+                  type: string
+                  description: The proposed article URL slug. WordPress may change it on collision; what actually resulted is read back and kept on the publication.
+                excerpt:
+                  type: string
+                  description: The summary themes use in listings and on category pages.
+                featuredImageAlt:
+                  type: string
+                  description: The featured image's alt text. Its absence is one of the findings the SEO analysis reports.
+                seoTitle:
+                  type: string
+                  description: The search-result title, when it differs from the article title.
+                featuredImageUrl:
+                  type: string
+                  description: The featured image. Can be the URL returned by `POST /partner/media`.
+                campaignId:
+                  type: string
+                  format: uuid
+                  description: The campaign the article belongs to.
+                idempotencyKey:
+                  type: string
+                  description: Chosen by you — a locally generated UUID is enough. Sent again, for the same organisation, it returns the article already created instead of making a new one. No effect on `PATCH`. Recommended for any code that might resend the request after a timeout.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+    get:
+      operationId: get_articles
+      summary: List articles
+      description: 'The organisation''s articles, most recently updated first. Cursor-paginated: the response''s `nextCursor` is sent back as `cursor` for the next page, `null` on the last one.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Articles
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        description: The id of the last article seen. Absent on the first page.
+        schema:
+          type: string
+          format: uuid
+      - name: limit
+        in: query
+        required: false
+        description: How many articles per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+  /partner/articles/import:
+    post:
+      operationId: post_articles_import
+      summary: Import a document
+      description: 'Accepts `.docx`, `.doc`, `.odt`, `.rtf`, `.fodt`, `.html` and `.htm`. Older formats go through LibreOffice, so they take a few seconds longer.
+
+
+        **File order matters**: the first file is the document, the second — optional — is the featured image. They cannot be told apart by field name, because everyone names their files differently.
+
+
+        Images inside the document are pulled into the media library and rewritten in the text; those that could not be pulled appear in `images.skipReasons` with the reason. Metadata — description, tags — is filled in afterwards, in the background.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Articles
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - (primul fișier)
+              properties:
+                (primul fișier):
+                  type: string
+                  description: The document.
+                (al doilea fișier):
+                  type: string
+                  description: The featured image, for documents with none in the body.
+                campaignId:
+                  type: string
+                  format: uuid
+                  description: The campaign the article belongs to.
+                folderId:
+                  type: string
+                  format: uuid
+                  description: The media-library folder the document images land in.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles[]:
+                    type: string
+                    description: The articles created, with title and word count.
+                  images:
+                    type: object
+                    additionalProperties: true
+                    description: How many images were imported, reused, converted, and why the rest were skipped.
+                  sanitized:
+                    type: object
+                    additionalProperties: true
+                    description: What the sanitiser removed. If the article looks different from the document, this says why.
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+  /partner/articles/drive:
+    get:
+      operationId: get_articles_drive
+      summary: List a Drive folder
+      description: 'The folder must be shared "anyone with the link": the platform reads it with its own account, the client signs in nowhere.
+
+
+        Listing is deliberately a separate step from importing. A folder usually holds drafts, old versions and the good document — importing everything produces ten articles, nine of which get deleted.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Articles
+      parameters:
+      - name: link
+        in: query
+        required: true
+        description: The folder link, as Google gives it.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+    post:
+      operationId: post_articles_drive
+      summary: Import from the Drive folder
+      description: 'At most fifty documents at a time. A broken document does not stop the rest: the result has one entry per file, with either the article count or its error.
+
+
+        The chosen image is downloaded once and used for every document that has none in its body.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Articles
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - link
+              - fisiere
+              properties:
+                link:
+                  type: string
+                  description: 'The same folder link used for the listing. Every requested file is checked against it: downloads use the platform account, which also sees other clients’ folders, so the route does not accept arbitrary Drive identifiers.'
+                fisiere:
+                  type: string
+                  description: The chosen documents, with `id`, `nume` and `mimeType` from the listing.
+                imagineId:
+                  type: string
+                  description: The id of an image in the same folder, used as the featured image.
+                campaignId:
+                  type: string
+                  format: uuid
+                  description: The campaign the articles belong to.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+  /partner/articles/{articleId}:
+    patch:
+      operationId: patch_articles_articleId
+      summary: Update an article
+      description: 'Every field from creation, all optional. Send only what changes. The same normalisations apply: one keyword, at most three tags.
+
+
+        `version` increases **only when the title or the content changes**, not on every edit. It is part of the publication idempotency key: a corrected, resubmitted article is a new publication, whereas a changed tag does not produce a different article on the site.
+
+
+        An article currently being published cannot be edited: you get `409`. The worker works from the content read at the start of the process, and an edit now would put something different on the site than what the platform holds.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Articles
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+    get:
+      operationId: get_articles_articleId
+      summary: One article
+      description: 'The whole article, with its text. This is also where you see whether a draft requested through `redactare` has finished: `redactedAt` set means done, and `redactionFindings` says what remains unresolved.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Articles
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  redactedAt:
+                    type: string
+                    enum:
+                    - datetime
+                    - 'null'
+                    description: When writing finished. `null` while queued.
+                  redactionFindings:
+                    type: string
+                    description: What did not come out right, with `cod` and `mesaj`. An article with blocking findings can be submitted, but is likely to be rejected by the publisher.
+                  suggestedCampaignType:
+                    type: string
+                    enum:
+                    - string
+                    - 'null'
+                    description: 'What kind of article it appears to be, after we read it. Deliberately separate from the type ordered: an article classified "SEO" but bought as a brand mention is a question to raise before payment, not a silent correction.'
+                  classificationConfidence:
+                    type: integer
+                    description: Out of 100. Rules alone give high confidence; when a model was needed to separate two candidates it is lower — and it shows.
+                  classificationReason:
+                    type: string
+                    enum:
+                    - string
+                    - 'null'
+                    description: The reason, written for a person. It can be argued with.
+                  version:
+                    type: integer
+                    description: Increases only when the title or content changes. Part of the publication idempotency key.
+                  status:
+                    type: string
+                    description: '`DRAFT`, `IN_REVIEW`, `APPROVED`, `SCHEDULED`, `PUBLISHING`, `PUBLISHED`, `FAILED`, `REJECTED`, `ARCHIVED`.'
+                  createdViaApi:
+                    type: boolean
+                    description: It came in through a key, not the interface. Everything you create through the API appears in the account like anything else — under Articles, Campaigns, Publications — with this marker beside it, so what the integration did is visible.
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

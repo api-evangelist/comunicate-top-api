@@ -1,0 +1,40 @@
+{
+  "provider": "comunicate-top-api",
+  "sources": [
+    "_original/comunicate-top-api-openapi-original.json"
+  ],
+  "outputs": [
+    "comunicate-top-api-articles-api-openapi.yml",
+    "comunicate-top-api-balance-and-reports-api-openapi.yml",
+    "comunicate-top-api-campaigns-api-openapi.yml",
+    "comunicate-top-api-catalogue-api-openapi.yml",
+    "comunicate-top-api-checks-api-openapi.yml",
+    "comunicate-top-api-domain-audit-api-openapi.yml",
+    "comunicate-top-api-key-and-permissions-api-openapi.yml",
+    "comunicate-top-api-media-api-openapi.yml",
+    "comunicate-top-api-public-catalogue-api-openapi.yml",
+    "comunicate-top-api-publications-api-openapi.yml",
+    "comunicate-top-api-writing-orders-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "comunicate-top-api-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "comunicate-top-api-articles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-balance-and-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-campaigns-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-catalogue-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-checks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-domain-audit-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-key-and-permissions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-public-catalogue-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-publications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "comunicate-top-api-writing-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

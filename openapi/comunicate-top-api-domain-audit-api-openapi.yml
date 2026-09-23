@@ -1,0 +1,118 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Domain audit API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Domain audit
+  description: 'A full check of a domain: PageSpeed on mobile and desktop with every category, real Chrome field data, Safe Browsing, and — when we have access to the property — Search Console.'
+paths:
+  /partner/audit:
+    get:
+      operationId: get_audit
+      summary: Audit a domain
+      description: 'Requires no permission: it neither reads nor writes anything about any organisation, it measures a public page anyone can open in a browser.
+
+
+        **Nothing is cached.** It is used in the "I changed something, let me check again" loop, and a ten-minute-old answer would look identical to a fresh one and falsely say the change had no effect.
+
+
+        It is also not written into the catalogue site audit: a check run against an inner page would replace the score measured on the home page there.
+
+
+        It takes between fifteen seconds and a minute and a half — the page is loaded twice, with Lighthouse.
+
+
+        No scope required.'
+      tags:
+      - Domain audit
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: A domain or a page URL. Without a scheme, `https` is assumed. Private-network addresses are rejected — the audit measures public sites, and the page is loaded by Google, not by our server.
+        schema:
+          type: string
+      - name: virustotal
+        in: query
+        required: false
+        description: '`1` also submits the URL to VirusTotal (~70 antivirus engines) and waits for the verdict — another 20–40 s. Off by default: their quota is 4 requests/minute and 500/day, and the audit runs dozens of times a day during layout work. Without the parameter, `virustotal` is `null` in the response — meaning “not checked”, not “clean”.'
+        schema:
+          type: boolean
+      - name: strategii
+        in: query
+        required: false
+        description: '`mobile`, `desktop` or both, comma-separated. Both by default — the simulated phone throttles the CPU fourfold, and JavaScript problems only show up there.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  siguranta:
+                    type: object
+                    additionalProperties: true
+                    description: Safe Browsing. A `marcat` domain gets a red interstitial in Chrome — until that is fixed, nothing else matters.
+                  strategii[].scoruri:
+                    type: object
+                    additionalProperties: true
+                    description: Performance, accessibility, best practices and SEO, 0–100.
+                  strategii[].probleme:
+                    type: string
+                    description: 'The failing audits, ordered: what is broken first, then what saves the most. Each carries the Lighthouse description — which also says how to fix it — plus estimated savings and up to ten offending elements.'
+                  teren:
+                    type: object
+                    additionalProperties: true
+                    description: Core Web Vitals from real visits over the last 28 days. They beat any lab score, when present.
+                  virustotal:
+                    type: string
+                    enum:
+                    - object
+                    - 'null'
+                    description: Only with `virustotal=1`. `stats` counts engines per verdict, `marcatDe` lists those that flagged the URL, `proaspata` says whether the analysis is fresh or the last available one, `link` opens the full report.
+                  searchConsole:
+                    type: object
+                    additionalProperties: true
+                    description: Indexing, robots.txt, last crawl, the canonical Google picked, mobile-usability and structured-data problems, sitemaps with their errors. Absent, with a reason, when the domain is not shared with us.
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2: []
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

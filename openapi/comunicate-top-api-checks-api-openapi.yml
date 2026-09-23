@@ -1,0 +1,215 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Checks API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Checks
+  description: 'What can be said about an article without calling any model: the SEO analysis and the campaign-type fit. Both are rule-based, so they cost nothing, are not rate-limited, and give the same answer every time.
+
+
+    They **report**; they fix nothing. Filling things in stays yours, through a `PATCH`.'
+paths:
+  /partner/articles/{articleId}:
+    delete:
+      operationId: delete_articles_articleId
+      summary: Delete an article
+      description: 'Responds `204` on success. Refused with `409` if the article has publications: a publication''s history must be able to show what was sent, and a published article is removed from the list, not from the database.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Checks
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+  /partner/articles/{articleId}/seo:
+    get:
+      operationId: get_articles_articleId_seo
+      summary: SEO analysis
+      description: 'Score, findings, statistics and the heading outline. The score is the percentage of checks passed, not a ranking promise.
+
+
+        What matters in the response is `issues`: each has a `code`, a severity and a message saying what is missing. Fixes — an over-long title, a missing description, images without alt text — are written with `PATCH /partner/articles/{id}`.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Checks
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  score:
+                    type: integer
+                    description: 0–100, the percentage of checks passed.
+                  issues[]:
+                    type: string
+                    description: '`code`, `severity` and `message`.'
+                  stats:
+                    type: object
+                    additionalProperties: true
+                    description: Words, headings, images without alt text, internal and external links, keyword density, and the lengths of title, description and slug.
+                  outline:
+                    type: string
+                    description: The heading outline, with each level.
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+  /partner/articles/{articleId}/potrivire:
+    get:
+      operationId: get_articles_articleId_potrivire
+      summary: Does it match the campaign type?
+      description: 'A different question from the SEO analysis: that one says how well the text is written, this one says whether it is the article that was **ordered**. A flawless SEO text is a certain rejection in a brand-mention campaign, because it carries links.
+
+
+        The check stops the order at submission anyway. Without this route, the only way to find out was to try — article by article, from errors. The response also includes `cerinte`, so the message to the client is not merely "does not match".
+
+
+        When the article sits in a campaign bound to a type, the verdict arrives on the article anyway, in `potrivireCampanie`; this is for a type you have not chosen yet.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Checks
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: campaignType
+        in: query
+        required: false
+        description: The type checked. Defaults to `SEO`.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+  /partner/articles/{articleId}/revisions:
+    get:
+      operationId: get_articles_articleId_revisions
+      summary: Previous revisions
+      description: 'The full text of every replaced version. A revision is written on each title or content change — exactly when `version` increases.
+
+
+        It exists for the moment a publisher says the article on the site no longer resembles what they accepted: answering that requires the whole text, not a sample from a log.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Checks
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  curenta:
+                    type: object
+                    additionalProperties: true
+                    description: The current version, so the first revision has something to compare against.
+                  revizii[]:
+                    type: string
+                    description: At most fifty, most recent first. `changedBy` is empty when the change came through an API key.
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

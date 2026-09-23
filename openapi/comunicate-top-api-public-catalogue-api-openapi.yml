@@ -1,0 +1,210 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Public catalogue API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Public catalogue
+  description: 'Four routes that work with no key at all: the network’s niches, one niche with sample publications, the catalogue figures and the market statistics. This is the same data the public site shows, served as JSON — useful for comparisons, for an assistant that wants to know what is in the network, or for anyone who wants to see the shape of the data before opening an account. There is deliberately no public route for the full publication list: the inventory is not downloadable in one request.'
+paths:
+  /public/stats:
+    get:
+      operationId: get__public_stats
+      summary: Catalogue figures
+      description: 'How many active publications the network has, and across how many niches. No key needed.
+
+
+        No authentication required: this route is open to anyone.'
+      tags:
+      - Public catalogue
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publications:
+                    type: integer
+                    description: Active publications.
+                  niches:
+                    type: integer
+                    description: Niches with publications.
+        '400':
+          description: Invalid input
+      security: []
+  /public/niches:
+    get:
+      operationId: get__public_niches
+      summary: The network’s niches
+      description: 'All niches, with the publication count and average authority of each. No key needed.
+
+
+        No authentication required: this route is open to anyone.'
+      tags:
+      - Public catalogue
+      parameters:
+      - name: locale
+        in: query
+        required: false
+        description: Language of names and descriptions. Defaults to `ro`.
+        schema:
+          type: string
+          enum:
+          - ro
+          - en
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slug:
+                    type: string
+                    description: The niche identifier, used in the next route.
+                  name:
+                    type: string
+                    description: The niche name in the requested language.
+                  description:
+                    type: string
+                    description: What kind of material the publications in this niche accept.
+                  publicationCount:
+                    type: integer
+                    description: How many active publications the niche has.
+                  averageDa:
+                    type: integer
+                    description: Average domain authority (Moz DA).
+        '400':
+          description: Invalid input
+      security: []
+  /public/niches/{slug}:
+    get:
+      operationId: get__public_niches_slug
+      summary: One niche, with sample publications
+      description: 'The requested niche and a few of its publications, with authority, turnaround, price and how paid content is labelled. It is a sample, not the inventory: the full list is visible from an account.
+
+
+        No authentication required: this route is open to anyone.'
+      tags:
+      - Public catalogue
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        required: false
+        description: Language of names and descriptions. Defaults to `ro`.
+        schema:
+          type: string
+          enum:
+          - ro
+          - en
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slug:
+                    type: string
+                    description: The niche identifier.
+                  name:
+                    type: string
+                    description: The niche name.
+                  publicationCount:
+                    type: integer
+                    description: How many publications the niche has in total.
+                  averageDa:
+                    type: integer
+                    description: The niche’s average authority.
+                  publications:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+                    description: 'The sample: `domain`, `language`, `metricDa`, `metricPa`, `deliveryDays`, `priceCents`, `currency`, `marcaj`.'
+        '400':
+          description: Invalid input
+      security: []
+  /public/statistici-piata:
+    get:
+      operationId: get__public_statistici_piata
+      summary: Market statistics
+      description: 'The catalogue’s aggregate figures: how many publications, how many from our own network, the authority distribution, turnaround times and the price for each campaign type. The data behind the “What an advertorial costs” page.
+
+
+        No authentication required: this route is open to anyone.'
+      tags:
+      - Public catalogue
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publicatii:
+                    type: integer
+                    description: Active publications with a public price.
+                  retea:
+                    type: integer
+                    description: How many of them are our own.
+                  autoritate:
+                    type: object
+                    additionalProperties: true
+                    description: Minimum, maximum, median, mean and the distribution across bands.
+                  termene:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+                    description: How many publications deliver in how many days.
+                  preturi:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+                    description: 'Per campaign type: price, minimum, maximum and how many publications accept it.'
+        '400':
+          description: Invalid input
+      security: []
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

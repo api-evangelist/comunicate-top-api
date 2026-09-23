@@ -1,0 +1,193 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Publications API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Publications
+  description: A publication ties an article to a publisher site. It is the only place in the API that spends credits or money.
+paths:
+  /partner/publications:
+    post:
+      operationId: post_publications
+      summary: Request publication
+      description: 'One article, one or more publications.
+
+
+        **Payment ambiguity is never guessed.** When several owned packages cover the same site, the request is rejected with `409` and the list of options; the integration picks one and retries with `packageTypeId`. Guessing would consume the wrong package, and that cannot be undone.
+
+
+        Required scope: `PUBLICATIONS_WRITE`.'
+      tags:
+      - Publications
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - articleId
+              - siteIds
+              - campaignType
+              properties:
+                articleId:
+                  type: string
+                  format: uuid
+                  description: The article to publish.
+                siteIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: The publications chosen from the catalogue.
+                campaignType:
+                  type: string
+                  description: The campaign type. Must be among the site's `acceptedCampaigns`.
+                packageTypeId:
+                  type: string
+                  format: uuid
+                  description: Which package pays, when several cover the site.
+                licenseNumber:
+                  type: string
+                  description: The operator’s ONJN gambling licence. Required when `campaignType` is `"CASINO"` — gambling advertising must display it, and the platform writes it onto the article itself before sending it.
+                extrasBySite:
+                  type: object
+                  additionalProperties: true
+                  description: Extras requested per site — `"HOMEPAGE_PLACEMENT"`, `"FACEBOOK_SHARE"`, at most both. The key is `siteId`, the value a list of types; each one requested must have an active offer on that site (see `GET /partner/catalog`), otherwise the request is rejected.
+                scheduledFor:
+                  type: string
+                  format: date-time
+                  description: When it should go live, if not immediately.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - PUBLICATIONS_WRITE
+    get:
+      operationId: get_publications
+      summary: List publications
+      description: 'All the organisation''s publications. `status` filters. Cursor-paginated: the response''s `nextCursor` is sent back as `cursor` for the next page, `null` on the last one.
+
+
+        For tracking state, webhooks are better: `publication.published` arrives with the article URL the moment it goes live, while polling burns your rate limit without learning anything extra.
+
+
+        Required scope: `PUBLICATIONS_READ`.'
+      tags:
+      - Publications
+      parameters:
+      - name: status
+        in: query
+        required: false
+        description: '`DRAFT`, `AWAITING_APPROVAL`, `APPROVED`, `PUBLISHING`, `PUBLISHED`, `FAILED`, `REJECTED`, `CANCELLED`.'
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        required: false
+        description: The id of the last publication seen. Absent on the first page.
+        schema:
+          type: string
+          format: uuid
+      - name: limit
+        in: query
+        required: false
+        description: How many publications per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - PUBLICATIONS_READ
+  /partner/publications/{publicationId}:
+    get:
+      operationId: get_publications_publicationId
+      summary: One publication
+      description: 'The whole publication, with its event history and the reason, when it failed or was rejected.
+
+
+        Required scope: `PUBLICATIONS_READ`.'
+      tags:
+      - Publications
+      parameters:
+      - name: publicationId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - PUBLICATIONS_READ
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

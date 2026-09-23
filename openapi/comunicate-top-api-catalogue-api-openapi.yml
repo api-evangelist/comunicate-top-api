@@ -1,0 +1,189 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Catalogue API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Catalogue
+  description: Which publications exist, what each campaign type costs, and whether your packages cover them.
+paths:
+  /partner/catalog:
+    get:
+      operationId: get_catalog
+      summary: List publications
+      description: 'The paginated catalogue, with the same filters as the interface. Each entry also states how it can be paid for: from a package, from the balance, or not at all.
+
+
+        Required scope: `CATALOG_READ`.'
+      tags:
+      - Catalogue
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Requested page, from 1.
+        schema:
+          type: integer
+      - name: pageSize
+        in: query
+        required: false
+        description: Entries per page, at most 100.
+        schema:
+          type: integer
+      - name: search
+        in: query
+        required: false
+        description: Searches name and domain.
+        schema:
+          type: string
+      - name: campaign
+        in: query
+        required: false
+        description: Only publications accepting the given type (see `campaign-types`).
+        schema:
+          type: string
+      - name: serviceType
+        in: query
+        required: false
+        description: '`PUBLISH_ONLY`, `WRITE_AND_PUBLISH`, `HOMEPAGE_PLACEMENT` or `FACEBOOK_SHARE`. For the other three, only sites with an active offer of the requested type appear — plain publishing is the base service, any priced site has it.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries[].id:
+                    type: string
+                    format: uuid
+                    description: The publication id. Used when requesting a publication.
+                  entries[].metrics:
+                    type: object
+                    additionalProperties: true
+                    description: DR, DA, PA and backlink count. `null` where we have no reading.
+                  entries[].audit:
+                    type: string
+                    enum:
+                    - object
+                    - 'null'
+                    description: '`flagged` is the only field that changes a decision: a site Google flags as dangerous should not be bought.'
+                  entries[].preturiCampanii:
+                    type: object
+                    additionalProperties: true
+                    description: Publication price per accepted campaign type, in minor units.
+                  entries[].access:
+                    type: object
+                    additionalProperties: true
+                    description: '`OWN`, `CREDIT` (covered by a package), `MONEY` (paid from balance), `UNAVAILABLE`. When `packages` has more than one entry, publishing requires `packageTypeId`.'
+                  entries[].masurat:
+                    type: object
+                    additionalProperties: true
+                    description: 'What we measured from our own orders: average hours to going live, how many verified publications are still fine. `null` where we have not published enough.'
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CATALOG_READ
+  /partner/catalog/{siteId}:
+    get:
+      operationId: get_catalog_siteId
+      summary: One publication
+      description: 'The same shape as a list entry, plus what does not fit in a listing: per-campaign terms, accepted topics, active offers — writing, homepage placement, Facebook sharing. A missing offer for a type means the site does not sell it.
+
+
+        Required scope: `CATALOG_READ`.'
+      tags:
+      - Catalogue
+      parameters:
+      - name: siteId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CATALOG_READ
+  /partner/campaign-types:
+    get:
+      operationId: get_campaign_types
+      summary: Campaign types
+      description: 'A type is not a label but a set of conditions the article passes or fails on submission. Checking them up front saves a chain of one-by-one rejections.
+
+
+        Which types a given site accepts is a different question, answered by `acceptedCampaigns` in the catalogue.
+
+
+        Required scope: `CATALOG_READ`.'
+      tags:
+      - Catalogue
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CATALOG_READ
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

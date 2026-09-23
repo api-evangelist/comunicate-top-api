@@ -1,0 +1,78 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Key and permissions API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Key and permissions
+  description: 'The first call of any integration: who the key is and what it may do. This is also where you see whether the organisation enabled "AI assistants may order and publish" — the switch that decides what an MCP assistant can do with the account’s money.'
+paths:
+  /partner/me:
+    get:
+      operationId: get_me
+      summary: Who am I
+      description: 'The organisation behind the key, its permissions and the AI assistants switch. Requires no scope: any valid key may ask.
+
+
+        No scope required.'
+      tags:
+      - Key and permissions
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  organization:
+                    type: object
+                    additionalProperties: true
+                    description: '`id` and `name`.'
+                  scopes:
+                    type: array
+                    items:
+                      type: string
+                    description: The key’s scopes.
+                  aiPublishing:
+                    type: boolean
+                    description: '`true` if AI assistants may order publications and writing (Integrations → AI assistants).'
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2: []
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

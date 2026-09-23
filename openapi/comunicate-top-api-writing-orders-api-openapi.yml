@@ -1,0 +1,231 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Writing orders API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Writing orders
+  description: 'The API starts no generation. You place an order, we see it, we write it or decline it with a reason, and you learn the outcome the same way.
+
+
+    The reason is simple: a key runs inside a script and can ask for a thousand articles overnight, out of quotas that belong to the platform and are shared by every client. And a model-written text delivered automatically, seen by nobody here, goes out to publishers under our name.'
+paths:
+  /partner/redactare:
+    post:
+      operationId: post_redactare
+      summary: Order an article
+      description: 'The response is the order, with `status: "NOUA"`. When it is done, the same order has `status: "LIVRATA"` and `articleId` filled in.
+
+
+        **It is paid from the money balance, not from credits.** A credit is “one publication included” from a package, not hours of writing. The price is reserved the moment the order arrives and consumed on delivery; a rejection, a cancellation or a writing failure on our side releases it in full. With no balance the order is refused with `400` and is not created at all — better a refusal at the door than an article written on credit.
+
+
+        `fapte` is the one measured field that changes the quality of the text. With the client''s data in front of it, the article uses their exact figures; without it, it stays general — correct, but less useful. The rule is strict: **only what appears there may appear in the article as a figure or a name**.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Writing orders
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - tema
+              - campaignType
+              - cuvinte
+              properties:
+                tema:
+                  type: string
+                  description: One sentence, as you would tell a writer. The title comes from it.
+                campaignType:
+                  type: string
+                  description: One of the types from `campaign-types`.
+                cuvinte:
+                  type: string
+                  enum:
+                  - '500'
+                  - '700'
+                  - '1000'
+                  - '1500'
+                  description: Target length.
+                cuvantCheie:
+                  type: string
+                  description: One only, one to four words.
+                brand:
+                  type: string
+                  description: The promoted brand.
+                adresaPromovata:
+                  type: string
+                  description: The URL the article points to.
+                fapte:
+                  type: string
+                  description: 'One item per entry: prices, years in business, certifications, who can be quoted.'
+                campaignId:
+                  type: string
+                  format: uuid
+                  description: The campaign the delivered article joins.
+                note:
+                  type: string
+                  description: Anything else you want to tell us about the order.
+                idempotencyKey:
+                  type: string
+                  description: 'Chosen by you — a locally generated UUID is enough. Sent again with exactly the same data, it returns the order already created instead of making a new one. Recommended for any code that might resend the request after a timeout: without a key, a resend creates a second order and a second money reservation.'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+    get:
+      operationId: get_redactare
+      summary: Your orders
+      description: '`status` filters. Most recent first.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Writing orders
+      parameters:
+      - name: status
+        in: query
+        required: false
+        description: '`NOUA`, `IN_LUCRU`, `LIVRATA`, `REFUZATA`, `ANULATA`.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+  /partner/redactare/{orderId}:
+    get:
+      operationId: get_redactare_orderId
+      summary: Order status
+      description: 'States: `NOUA` (received), `IN_LUCRU` (someone here picked it up), `LIVRATA` (`articleId` filled in, `chargedCents` says what was charged), `REFUZATA` (with `rejectionReason`), `ANULATA`, `ESUATA` (writing failed on our side). In the last three, the reserved amount returns to the balance.
+
+
+        `articleId` is returned **only on delivery**. While it is being written the draft is ours: if the model produced something weak, it gets rewritten or declined, without anyone having had the chance to send it on.
+
+
+        A `redaction.delivered` webhook saves you from polling — a human review sits between the request and the article, and its duration cannot be predicted.
+
+
+        Required scope: `ARTICLES_READ`.'
+      tags:
+      - Writing orders
+      parameters:
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_READ
+  /partner/redactare/{orderId}/anuleaza:
+    post:
+      operationId: post_redactare_orderId_anuleaza
+      summary: Cancel an order
+      description: 'Only while it is `NOUA`. Once someone here has picked it up the work is done or in progress and cancelling is no longer yours to do: you get `409`, and closing it stays a declined order with a reason, from our side.
+
+
+        Required scope: `ARTICLES_WRITE`.'
+      tags:
+      - Writing orders
+      parameters:
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - ARTICLES_WRITE
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read

@@ -1,0 +1,261 @@
+openapi: 3.2.0
+info:
+  title: Comunicate.top Campaigns API
+  version: 1.0.0
+  description: 'Publish articles (advertorials, press releases) on 3.800+ websites in Romania, Italy and beyond: catalogue, articles, publications, campaigns, reports.'
+  contact:
+    url: https://comunicate.top/ro/contact
+servers:
+- url: https://app.comunicate.top/api/v1
+tags:
+- name: Campaigns
+  description: Grouping articles and publications by client or project. The equivalent of "projects" on other platforms.
+paths:
+  /partner/campaigns:
+    get:
+      operationId: get_campaigns
+      summary: List campaigns
+      description: '`status` filters. Cursor-paginated: the response’s `nextCursor` is sent back as `cursor` for the next page, `null` on the last one.
+
+
+        Required scope: `CAMPAIGNS_READ`.'
+      tags:
+      - Campaigns
+      parameters:
+      - name: status
+        in: query
+        required: false
+        description: '`DRAFT`, `ACTIVE`, `PAUSED`, `COMPLETED`, `ARCHIVED`.'
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        required: false
+        description: The id of the last campaign seen. Absent on the first page.
+        schema:
+          type: string
+          format: uuid
+      - name: limit
+        in: query
+        required: false
+        description: How many campaigns per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CAMPAIGNS_READ
+    post:
+      operationId: post_campaigns
+      summary: Create a campaign
+      description: 'The body is strict: a field it does not know is rejected with `400`, not silently ignored. Better an error on the first attempt than a setting that looks applied and is not.
+
+
+        Required scope: `CAMPAIGNS_WRITE`.'
+      tags:
+      - Campaigns
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: Campaign name.
+                campaignType:
+                  type: string
+                  description: Binds the campaign to a type. Every article that joins it is checked automatically against the type’s requirements, and the verdict appears on the article in `potrivireCampanie`. It does not block writing — rejection stays at the order, where the payment is.
+                clientName:
+                  type: string
+                  description: 'The end client’s label. Free text: clients have no account on the platform.'
+                objective:
+                  type: string
+                  description: What the campaign is for.
+                notes:
+                  type: string
+                  description: Internal notes.
+                startsAt:
+                  type: string
+                  format: date-time
+                  description: ISO 8601. Must precede `endsAt`.
+                endsAt:
+                  type: string
+                  format: date-time
+                  description: ISO 8601.
+                budgetCents:
+                  type: integer
+                  description: 'A tracked budget, in minor units. Not a separate wallet: the money stays in the organisation’s account.'
+                budgetCredits:
+                  type: integer
+                  description: Limit on credits spent in the campaign.
+                allowedSiteIds:
+                  type: string
+                  description: Allowed sites. Empty means “any in the catalogue”.
+                idempotencyKey:
+                  type: string
+                  description: Chosen by you — a locally generated UUID is enough. Sent again, for the same organisation, it returns the campaign already created instead of making a new one. Recommended for any code that might resend the request after a timeout.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CAMPAIGNS_WRITE
+  /partner/campaigns/{campaignId}:
+    get:
+      operationId: get_campaigns_campaignId
+      summary: One campaign
+      description: 'The campaign, with its articles and publications.
+
+
+        Required scope: `CAMPAIGNS_READ`.'
+      tags:
+      - Campaigns
+      parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CAMPAIGNS_READ
+    patch:
+      operationId: patch_campaigns_campaignId
+      summary: Update a campaign
+      description: 'Every field from creation, all optional. Send only what changes.
+
+
+        Most often used for `campaignType`: binds an already-created campaign to a type, or clears it with `null`. Every article in the campaign is automatically rechecked against the new type — see `potrivireCampanie` on the article.
+
+
+        Required scope: `CAMPAIGNS_WRITE`.'
+      tags:
+      - Campaigns
+      parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CAMPAIGNS_WRITE
+    delete:
+      operationId: delete_campaigns_campaignId
+      summary: Delete a campaign
+      description: 'Responds `204` on success. Refused with `409` if the campaign is active and has articles — the same rule as in the interface: a campaign with history gets archived (`PATCH` with `status: "ARCHIVED"`), not deleted.
+
+
+        Required scope: `CAMPAIGNS_WRITE`.'
+      tags:
+      - Campaigns
+      parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid input
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: The key lacks the required scope
+      security:
+      - apiKey: []
+      - oauth2:
+        - CAMPAIGNS_WRITE
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: API key from Integrations (bk_live_…)
+    oauth2:
+      type: oauth2
+      description: OAuth 2.1 with PKCE (S256). Dynamic client registration at https://app.comunicate.top/api/v1/oauth/register. The access token is an API key and is accepted everywhere an API key is.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.comunicate.top/api/v1/oauth/authorize
+          tokenUrl: https://app.comunicate.top/api/v1/oauth/token
+          refreshUrl: https://app.comunicate.top/api/v1/oauth/token
+          scopes:
+            CATALOG_READ: catalog read
+            ARTICLES_READ: articles read
+            ARTICLES_WRITE: articles write
+            MEDIA_WRITE: media write
+            PUBLICATIONS_READ: publications read
+            PUBLICATIONS_WRITE: publications write
+            CAMPAIGNS_READ: campaigns read
+            CAMPAIGNS_WRITE: campaigns write
+            BALANCE_READ: balance read
+            REPORTS_READ: reports read
