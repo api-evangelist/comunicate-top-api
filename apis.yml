@@ -281,6 +281,9 @@ x-enrichment:
   artifacts_added: 29
   pass: local-v3
 common:
+- type: CapabilityMap
+  url: capabilities/comunicate-top-api-capability-edges.yml
+  name: Comunicate.top API Business Capability Map
 - type: MCPServer
   url: https://app.comunicate.top/mcp
 - type: Website
