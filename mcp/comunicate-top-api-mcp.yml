@@ -62,3 +62,29 @@ tools:
   spends_money: true
 - name: list_writing_orders
 - name: report_summary
+rfc9728:
+  endpoint: https://app.comunicate.top/mcp
+  metadata_url: https://app.comunicate.top/.well-known/oauth-protected-resource/mcp
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://app.comunicate.top/mcp
+    authorization_servers:
+    - https://app.comunicate.top
+    scopes_supported:
+    - CATALOG_READ
+    - ARTICLES_READ
+    - ARTICLES_WRITE
+    - MEDIA_WRITE
+    - PUBLICATIONS_READ
+    - PUBLICATIONS_WRITE
+    - CAMPAIGNS_READ
+    - CAMPAIGNS_WRITE
+    - BALANCE_READ
+    - REPORTS_READ
+    bearer_methods_supported:
+    - header
+    resource_name: Comunicate.top MCP
+    resource_documentation: https://comunicate.eu/ro/mcp
