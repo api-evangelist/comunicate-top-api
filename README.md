@@ -1,4 +1,4 @@
-# comunicate-top-api
+# Comunicate.top API
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,4 +64,138 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Romanian press-release and advertorial distribution platform exposing a REST API (with free keyless public read routes and authenticated partner routes), an OpenAPI 3.1 contract, an llms.txt, and a hosted MCP server for agent-native access to catalogue search, drafting, editorial planning, and publi
+Romanian press-release and advertorial distribution platform exposing a REST API (with free keyless public read routes and authenticated partner routes), an OpenAPI 3.1 contract, an llms.txt, and a hosted MCP server for agent-native access to catalogue search, drafting, editorial planning, and publication ordering.
+
+**Areas:** Press Releases · Advertorials · PR · Publishing · Media · SEO · Link Building · Content Marketing · Romania · MCP · Open Data · Webhook
+
+## Comunicate.top API on APIs.io
+
+Everything profiled for Comunicate.top API is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/comunicate-top-api/](https://apis.io/providers/comunicate-top-api/)** — or go straight to one of the APIs or properties below.
+
+### APIs (11)
+
+- [Comunicate.top API Articles API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-articles-api/) — An article enters the platform four ways: written by you as HTML, imported from a document, taken from a Drive folder, or written by the platform from a…
+- [Comunicate.top API Balance and reports API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-balance-and-reports-api/) — The Balance and reports API from Comunicate.top API — 3 operation(s) for balance and reports.
+- [Comunicate.top API Campaigns API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-campaigns-api/) — Grouping articles and publications by client or project. The equivalent of "projects" on other platforms.
+- [Comunicate.top API Catalogue API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-catalogue-api/) — Which publications exist, what each campaign type costs, and whether your packages cover them.
+- [Comunicate.top API Checks API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-checks-api/) — What can be said about an article without calling any model: the SEO analysis and the campaign-type fit. Both are rule-based, so they cost nothing, are not…
+- [Comunicate.top API Domain audit API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-domain-audit-api/) — A full check of a domain: PageSpeed on mobile and desktop with every category, real Chrome field data, Safe Browsing, and — when we have access to the…
+- [Comunicate.top API Key and permissions API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-key-and-permissions-api/) — The first call of any integration: who the key is and what it may do. This is also where you see whether the organisation enabled "AI assistants may order…
+- [Comunicate.top API Media API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-media-api/) — The Media API from Comunicate.top API — 1 operation(s) for media.
+- [Comunicate.top API Public catalogue API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-public-catalogue-api/) — Four routes that work with no key at all: the network’s niches, one niche with sample publications, the catalogue figures and the market statistics. This is…
+- [Comunicate.top API Publications API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-publications-api/) — A publication ties an article to a publisher site. It is the only place in the API that spends credits or money.
+- [Comunicate.top API Writing orders API](https://apis.io/apis/comunicate-top-api/comunicate-top-api-writing-orders-api/) — The API starts no generation. You place an order, we see it, we write it or decline it with a reason, and you learn the outcome the same way. The reason is…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Comunicate Top Api Webhooks](https://apis.io/asyncapis/comunicate-top-api/comunicate-top-api-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [mcp](https://apis.io/servers/comunicate-top-api/mcp/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Comunicate Top Api Openapi Overlay](https://apis.io/overlays/comunicate-top-api/comunicate-top-api-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Comunicate Top Api Authentication](https://apis.io/security/comunicate-top-api/comunicate-top-api-authentication/)
+- [Comunicate Top Api Domain Security](https://apis.io/security/comunicate-top-api/comunicate-top-api-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Comunicate Top Api Scopes](https://apis.io/scopes/comunicate-top-api/comunicate-top-api-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Comunicate Top Api Plans Pricing](https://apis.io/plans/comunicate-top-api/comunicate-top-api-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Comunicate Top Api Rate Limits](https://apis.io/rate-limits/comunicate-top-api/comunicate-top-api-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://comunicate.top)
+- [Pricing](https://comunicate.top/ro/preturi)
+- [Sign up](https://app.comunicate.top/ro/inregistrare)
+- [Support](https://comunicate.top/ro/contact)
+- [Blog](https://comunicate.top/ro/blog)
+- [Terms of service](https://comunicate.top/ro/legal/termeni)
+- [Privacy policy](https://comunicate.top/ro/legal/confidentialitate)
+
+## API Evangelist rating
+
+**Kin Score 40.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.5 |
+| Contract governance | 4.5 |
+| Operational transparency | 28.9 |
+| Developer ergonomics | 33.9 |
+| Access clarity | 22.4 |
+
+**Agent readiness 60.7** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | verified |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 30.4** — Government & Public Sector
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/comunicate-top-api/](https://apis.io/providers/comunicate-top-api/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Comunicate.top API: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/comunicate-top-api/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
